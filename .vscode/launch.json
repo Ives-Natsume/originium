@@ -1,0 +1,60 @@
+{
+  // F5 直接调试当前打开的 main 包；断点、单步、看变量都能用。
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "调试当前文件所在包",
+      "type": "go",
+      "request": "launch",
+      "mode": "auto",
+      "program": "${fileDirname}",
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "调试指定包（弹出输入）",
+      "type": "go",
+      "request": "launch",
+      "mode": "auto",
+      "program": "${input:packagePath}",
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "调试 01-basics/02-fmt-and-io",
+      "type": "go",
+      "request": "launch",
+      "mode": "auto",
+      "program": "${workspaceFolder}/01-basics/02-fmt-and-io",
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "调试 06-rpg-server",
+      "type": "go",
+      "request": "launch",
+      "mode": "auto",
+      "program": "${workspaceFolder}/06-rpg-server/cmd/server",
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}",
+      "envFile": "${workspaceFolder}/.env"
+    },
+    {
+      "name": "调试当前测试函数",
+      "type": "go",
+      "request": "launch",
+      "mode": "auto",
+      "program": "${fileDirname}",
+      "args": ["-test.run", "^${selectedText}$"],
+      "console": "integratedTerminal"
+    }
+  ],
+  "inputs": [
+    {
+      "id": "packagePath",
+      "type": "promptString",
+      "description": "要调试的包路径",
+      "default": "01-basics/02-fmt-and-io"
+    }
+  ]
+}

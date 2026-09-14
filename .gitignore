@@ -1,0 +1,35 @@
+# ---- 构建产物 ----
+/bin/
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# ---- 测试 / 覆盖率 ----
+coverage.out
+coverage.html
+*.test
+*.prof
+
+# ---- 运行时数据 ----
+*.db
+*.sqlite
+*.sqlite3
+*.log
+/data/
+/tmp/
+
+# ---- 编辑器 / 系统 ----
+.idea/
+.vscode/*.local.json
+.DS_Store
+Thumbs.db
+
+# ---- 环境变量（可能含密码） ----
+.env
+.env.local
+.env.*.local
+
+# ---- Go 工具 ----
+# 依赖由 go.mod / go.sum 管理，直接提交

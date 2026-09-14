@@ -1,0 +1,55 @@
+# VS Code 工作区设置 —— 让 Go 学习体验尽量顺滑
+{
+  "go.useLanguageServer": true,
+
+  // 保存时自动格式化 + 自动整理 import（学习期最省心的开关）
+  "[go]": {
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": "explicit"
+    },
+    "editor.insertSpaces": false,
+    "editor.tabSize": 4,
+    "editor.rulers": [100]
+  },
+  "[go.mod]": {
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": "explicit"
+    }
+  },
+
+  // 实验性分析器：未使用的变量、可疑的并发写法都会实时标出来
+  "gopls": {
+    "ui.diagnostic.analyses": {
+      "unusedvariable": true,
+      "unusedparams": true,
+      "shadow": true,
+      "nilness": true,
+      "loopclosure": true
+    },
+    "ui.diagnostic.staticcheck": true,
+    "formatting.gofumpt": false,
+    "ui.completion.usePlaceholders": true
+  },
+
+  // 生成 _test.go 时用表驱动模板
+  "go.testFlags": ["-v"],
+  "go.coverOnSave": false,
+  "go.coverOnTestPackage": true,
+  "go.testTimeout": "60s",
+
+  // 测试文件里不折叠错误、不删 import
+  "files.exclude": {
+    "**/bin": true
+  },
+  "search.exclude": {
+    "**/bin": true,
+    "coverage.out": true,
+    "go.sum": false
+  },
+
+  // 这些文件里不要乱提示
+  "gopls.ui.semanticTokens": true,
+  "editor.suggest.snippetsPreventQuickSuggestions": false
+}

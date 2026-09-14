@@ -1,0 +1,79 @@
+{
+  // 把常用命令收进命令面板（Ctrl+Shift+P -> "任务: 运行任务"）
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "体检 (fmt+vet+build+test)",
+      "type": "shell",
+      "command": "make check",
+      "group": { "kind": "test", "isDefault": true },
+      "problemMatcher": ["$go"]
+    },
+    {
+      "label": "跑全部测试",
+      "type": "shell",
+      "command": "make test",
+      "group": "test",
+      "problemMatcher": ["$go"]
+    },
+    {
+      "label": "跑当前包测试",
+      "type": "shell",
+      "command": "go test -v ./${relativeFileDirname}",
+      "group": "test",
+      "problemMatcher": ["$go"]
+    },
+    {
+      "label": "竞态检测 (当前包)",
+      "type": "shell",
+      "command": "go test -race -v ./${relativeFileDirname}",
+      "group": "test",
+      "problemMatcher": ["$go"]
+    },
+    {
+      "label": "运行当前包",
+      "type": "shell",
+      "command": "go run ./${relativeFileDirname}",
+      "group": { "kind": "build", "isDefault": true },
+      "problemMatcher": ["$go"]
+    },
+    {
+      "label": "热重载当前包",
+      "type": "shell",
+      "command": "./scripts/watch.sh ${relativeFileDirname}",
+      "isBackground": true,
+      "problemMatcher": ["$go"]
+    },
+    {
+      "label": "编译整个仓库",
+      "type": "shell",
+      "command": "make build",
+      "group": "build",
+      "problemMatcher": ["$go"]
+    },
+    {
+      "label": "格式化",
+      "type": "shell",
+      "command": "make fmt",
+      "problemMatcher": []
+    },
+    {
+      "label": "生成覆盖率报告",
+      "type": "shell",
+      "command": "make cover-html",
+      "problemMatcher": []
+    },
+    {
+      "label": "启动 MySQL + Redis",
+      "type": "shell",
+      "command": "make docker-up",
+      "problemMatcher": []
+    },
+    {
+      "label": "停止 MySQL + Redis",
+      "type": "shell",
+      "command": "make docker-down",
+      "problemMatcher": []
+    }
+  ]
+}
