@@ -105,7 +105,7 @@ func main() {
 	// 取消下面注释后，`make run p=01-basics/02-fmt-and-io` 会等你输入，
 	// 输入几行文字按 Ctrl-D 结束。
 	fmt.Println("\n---- 逐行读取标准输入（示例代码已注释，可解开体验）----")
-	// scanStdin()
+	scanStdin()
 
 	// ================= 5. 输出到不同目标 =================
 	// fmt.Fprintln 的第一个参数是 io.Writer：

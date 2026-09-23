@@ -54,10 +54,11 @@ func Reverse(s string) string {
 // CountVowels 统计元音字母，演示 range over string 的行为。
 func CountVowels(s string) int {
 	n := 0
-	for _, r := range strings.ToLower(s) { // range 字符串时 r 是 rune，不是 byte
+	for i, r := range strings.ToLower(s) { // range 字符串时 r 是 rune，不是 byte
 		if strings.ContainsRune("aeiou", r) {
 			n++
 		}
+		fmt.Printf("i: %5v | r: %c\n", i, r)
 	}
 	return n
 }
@@ -164,7 +165,7 @@ func main() {
 	}())
 
 	fmt.Println("\n---- 字符串 / 字节 / rune ----")
-	text := "Go语言"
+	text := "庄方宜电我"
 	fmt.Printf("%q 字节数=%d 字符数=%d\n", text, len(text), len([]rune(text)))
 	for i, r := range text {
 		fmt.Printf("  字节下标=%-2d rune=%q 码点=U+%04X\n", i, r, r)

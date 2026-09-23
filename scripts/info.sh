@@ -5,9 +5,12 @@
 set -uo pipefail
 
 C_RESET=$'\033[0m'; C_CYAN=$'\033[36m'; C_BOLD=$'\033[1m'; C_DIM=$'\033[2m'
+SCRIPT_DIR="$(CDPATH= cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+MODULE_TOOL="$SCRIPT_DIR/go-modules.sh"
+ROOT_DIR="$(CDPATH= cd -- "$SCRIPT_DIR/.." && pwd)"
 
 printf '\n%sOriginium · 环境信息%s\n' "$C_BOLD" "$C_RESET"
-printf '%s模块%s      %s\n' "$C_DIM" "$C_RESET" "$(head -1 go.mod | awk '{print $2}')"
+printf '%s模块%s      %s\n' "$C_DIM" "$C_RESET" "$(head -1 "$ROOT_DIR/go.mod" | awk '{print $2}')"
 printf '%sGo 版本%s   %s\n' "$C_DIM" "$C_RESET" "$(go version)"
 printf '%sGOPATH%s    %s\n' "$C_DIM" "$C_RESET" "$(go env GOPATH)"
 printf '%s代理%s      %s\n' "$C_DIM" "$C_RESET" "$(go env GOPROXY)"
@@ -22,12 +25,26 @@ for d in [0-9][0-9]-*/; do
 done
 
 printf '\n%s包统计%s\n' "$C_BOLD" "$C_RESET"
-pkgs=$(go list ./... 2>/dev/null | wc -l)
-printf '  包数量      %s\n' "$pkgs"
-printf '  第三方依赖  %s\n' "$(go list -m all 2>/dev/null | grep -vc '^github.com/Ives-Natsume/originium$' || echo 0)"
+module_count=0
+pkgs=0
+for module in $($MODULE_TOOL list); do
+	if [[ "$module" == "." ]]; then module_dir="$ROOT_DIR"; else module_dir="$ROOT_DIR/$module"; fi
+	module_pkgs=$(cd "$module_dir" && go list ./... 2>/dev/null | wc -l)
+	module_name=$(cd "$module_dir" && go list -m -f '{{.Path}}' 2>/dev/null || printf '未知')
+	printf '  %-22s %3s 个包  %s\n' "$module" "$module_pkgs" "$module_name"
+	pkgs=$((pkgs + module_pkgs))
+	module_count=$((module_count + 1))
+done
+printf '  包总数      %s\n' "$pkgs"
+printf '  module 数量  %s\n' "$module_count"
 
 printf '\n%s测试用例%s\n' "$C_BOLD" "$C_RESET"
-tests=$(go test -list '.*' ./... 2>/dev/null | grep -cE '^(Test|Example|Benchmark)' || true)
+tests=0
+for module in $($MODULE_TOOL list); do
+	if [[ "$module" == "." ]]; then module_dir="$ROOT_DIR"; else module_dir="$ROOT_DIR/$module"; fi
+	module_tests=$(cd "$module_dir" && go test -list '.*' ./... 2>/dev/null | grep -cE '^(Test|Example|Benchmark)' || true)
+	tests=$((tests + module_tests))
+done
 printf '  数量        %s\n' "$tests"
 printf '  跑一遍      make test\n'
 

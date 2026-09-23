@@ -1,4 +1,3 @@
-# VS Code 工作区设置 —— 让 Go 学习体验尽量顺滑
 {
   "go.useLanguageServer": true,
 

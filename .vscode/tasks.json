@@ -19,28 +19,28 @@
     {
       "label": "跑当前包测试",
       "type": "shell",
-      "command": "go test -v ./${relativeFileDirname}",
+      "command": "make test-v p=${relativeFileDirname}",
       "group": "test",
       "problemMatcher": ["$go"]
     },
     {
       "label": "竞态检测 (当前包)",
       "type": "shell",
-      "command": "go test -race -v ./${relativeFileDirname}",
+      "command": "make test-race p=${relativeFileDirname}",
       "group": "test",
       "problemMatcher": ["$go"]
     },
     {
       "label": "运行当前包",
       "type": "shell",
-      "command": "go run ./${relativeFileDirname}",
+      "command": "make run p=${relativeFileDirname}",
       "group": { "kind": "build", "isDefault": true },
       "problemMatcher": ["$go"]
     },
     {
       "label": "热重载当前包",
       "type": "shell",
-      "command": "./scripts/watch.sh ${relativeFileDirname}",
+      "command": "make watch p=${relativeFileDirname}",
       "isBackground": true,
       "problemMatcher": ["$go"]
     },
