@@ -1,8 +1,11 @@
 package main
 
 import (
+	"context"
 	"errors"
 	"fmt"
+	"io"
+	"net/http"
 	"time"
 )
 
@@ -90,6 +93,10 @@ func main() {
 	}
 	
 	for _, task := range taskList {
+		err := handleTask(task)
+		if err != nil {
+			fmt.Println(err.Error())
+		}
 		printTask(&task)
 	}
 }
@@ -124,9 +131,42 @@ func parseRequest(taskType string, idList []uint64) (Task, error) {
 }
 
 func printTask(task *Task) {
+	fmt.Println()
 	fmt.Println("Task: ", task.ID)
 	fmt.Println(". Created at: ", task.CreatedAt)
 	fmt.Println(". Type: ", task.Type)
 	fmt.Println(". Status: ", task.Status)
 	fmt.Println(". Result: ", task.Result)
+	fmt.Println()
+}
+
+func handleTask(task Task) error {
+	switch task.Type {
+	case Query:
+		err := queryHandler()
+		if err != nil {
+			task.Status = Failed
+			task.Result.Err = err
+			return err
+		}
+	default:
+		fmt.Println("handleTask: Not impled yet")
+		task.Status = Completed
+	}
+	return nil
+}
+
+func queryHandler() error {
+	req, err := http.NewRequestWithContext(context.Background(), http.MethodGet,
+		"http://localhost:8080/operators", nil)
+	if err != nil {
+		return err
+	}
+
+	
+}
+
+func insertHandler() error {
+
+	return nil
 }
